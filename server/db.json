@@ -1,0 +1,34 @@
+{
+  "posts": [
+    {
+      "title": "json-server",
+      "author": "robin",
+      "id": 1
+    },
+    {
+      "title": "ujian chuninn",
+      "author": "kakashi",
+      "id": 2
+    },
+    {
+      "author": "dino",
+      "title": "cara jitu menjadi shinobi",
+      "id": 3
+    },
+    {
+      "author": "yohana",
+      "title": "menjadi wibu yang keren",
+      "id": 4
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
