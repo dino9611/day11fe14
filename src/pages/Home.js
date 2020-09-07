@@ -2,6 +2,11 @@ import React, { Component,createRef } from 'react';
 import { Table } from 'reactstrap';
 import axios from 'axios'
 import {MdAddCircleOutline,MdDeleteForever} from 'react-icons/md'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import {Link} from 'react-router-dom'
+const MySwal = withReactContent(Swal)
+
 class Home extends Component {
     state = {
         datapost:[],
@@ -27,11 +32,45 @@ class Home extends Component {
                     <td>{val.author}</td>
                     <td>{val.title}</td>
                     <td>
-                        <button className='btn btn-danger'> <MdDeleteForever/></button>
+                        <Link to={`/comments/${val.id}`}>
+                            <button className='btn btn-primary'>Comment</button>
+                        </Link>
+                        <button className='btn btn-danger' onClick={()=>this.DeletePostid(val.id,index)}> <MdDeleteForever/></button>
                     </td>
                 </tr>
             )
         })
+    }
+
+    DeletePostid=(id,index)=>{
+        MySwal.fire({
+            title: `Are you sure wanna delete ${this.state.datapost[index].author} ?`,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.value) {
+                axios.delete(`http://localhost:4000/posts/${id}`)
+                .then(()=>{
+                    axios.get('http://localhost:4000/posts')
+                    .then((res)=>{
+                        this.setState({datapost:res.data})
+                        MySwal.fire(
+                          'Deleted!',
+                          'Your file has been deleted.',
+                          'success'
+                        )
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
+                }).catch((err)=>{
+                    console.log(err)
+                })
+            }
+          })
     }
 
     addPostClick=()=>{
@@ -75,7 +114,7 @@ class Home extends Component {
                 <div className='d-flex align-items-center flex-column'>
                     <input type='text' ref={this.state.inputauthor} onKeyUp={this.onKeyUphandler} className='form-control mb-3' placeholder='author'/>
                     <input type='text' ref={this.state.inputtitle} onKeyUp={this.onkeyupTitle} className='form-control mb-3' placeholder='title'/>
-                    <button onClick={this.addPostClick} className='btn btn-outline-primary mb-3' style={{width:'60%'}}>
+                    <button onClick={this.addPostClick} className='btn btn-outline-success mb-3' style={{width:'60%'}}>
                         <MdAddCircleOutline style={{fontSize:'22'}}/> Add 
                     </button>
                 </div>
