@@ -13,7 +13,8 @@ import {
   DropdownItem,
   NavbarText
 } from 'reactstrap';
-
+import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
 const Example = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,7 +39,9 @@ const Example = (props) => {
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem>
-                  Option 1
+                  <Link to='/hitung'>
+                    Hitungkata
+                    </Link>
                 </DropdownItem>
                 <DropdownItem>
                   Option 2
@@ -50,11 +53,17 @@ const Example = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          <NavbarText>jumlah kata {props.Hitungkata.jumlahkata}</NavbarText>
+          {/* <NavbarText>{props.bebas.kendaraan} biayanya Rp.{props.bebas.jam*props.bebas.biaya}</NavbarText> */}
         </Collapse>
       </Navbar>
     </div>
   );
 }
-
-export default Example;
+const Mapstatetoprop=(state)=>{
+  return{
+    Hitungkata:state.hitungkata,
+    bebas:state.parkir
+  }
+}
+export default connect(Mapstatetoprop)(Example);

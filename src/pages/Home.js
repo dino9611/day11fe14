@@ -18,6 +18,7 @@ class Home extends Component {
         axios.get('http://localhost:4000/posts')
         .then((res)=>{
             this.state.inputauthor.current.focus()
+            console.log(res)
             this.setState({datapost:res.data})
         }).catch((err)=>{
             console.log(err)
@@ -32,7 +33,10 @@ class Home extends Component {
                     <td>{val.author}</td>
                     <td>{val.title}</td>
                     <td>
-                        <Link to={`/comments/${val.id}`}>
+                        <Link to={{
+                            pathname:`/comments/${val.id}`,
+                            state:{data:val}
+                        }}>
                             <button className='btn btn-primary'>Comment</button>
                         </Link>
                         <button className='btn btn-danger' onClick={()=>this.DeletePostid(val.id,index)}> <MdDeleteForever/></button>
@@ -94,6 +98,7 @@ class Home extends Component {
         }).catch((err)=>{
             console.log(err)
         })
+
     }
 
     onKeyUphandler=(e)=>{
